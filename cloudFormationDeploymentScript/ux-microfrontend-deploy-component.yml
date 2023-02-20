@@ -1,0 +1,370 @@
+AWSTemplateFormatVersion: "2010-09-09"
+
+Description: CF template to deploy all the independant components of the micro-frontend react app
+
+# Parameters to be used through out the template
+Parameters:
+  GithubUserName:
+    Type: String
+    Default: NA
+  GithubRepo:
+    Type: String
+    Default:  NA
+  GithubOAuthToken:
+    Type: String
+    Default: NA
+  EC2DefaultRole:
+    Type: String
+    Default: NA
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.0.0.0/16
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+      - Key: Name
+        Value: VPC-RT-PERSONALIZE-REACT-MF
+
+  # internet gateway to allow external traffic to load balancer
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+      - Key: Name
+        Value: Internet Gateway for VPC-RT-PERSONALIZE-REACT-MF
+
+  AttachGateway:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+  
+  # first public subnet for ALB
+  PublicSubnet1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.1.0/24
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: { Ref: 'AWS::Region' }
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet1VPCRTPERSN
+
+  # second public subnet for ALB
+  PublicSubnet2:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.3.0/24
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: { Ref: 'AWS::Region' }
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: PublicSubnet2VPCRTPERSN
+  
+  # create a NAT gateway for private subnect to reach out to internet
+  # NatGateway1 attachment
+  NatGateway1Attachment:
+    Type: AWS::EC2::EIP
+    DependsOn: AttachGateway
+    Properties:
+      Domain: vpc
+  
+  NatGateway1:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt NatGateway1Attachment.AllocationId
+      SubnetId: !Ref PublicSubnet1
+
+  #Private Subnet for EC2 instance hosting react apps
+  PrivateSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref VPC
+      CidrBlock: 10.0.2.0/24
+      MapPublicIpOnLaunch: false
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: { Ref: 'AWS::Region' }
+      Tags:
+        - Key: Name
+          Value: Private-Subnet-VPC-RT-PERSN
+
+  # public route table for the public subnets
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+        - Key: Name
+          Value: Public Route Table
+
+  # public route
+  # this is kept open to the world for the demo site to be accesses
+  # please review this suitably, before adopting to a business use case.
+  PublicRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+  
+  # route table association for first public subnet
+  PublicSubnetRouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet1
+      RouteTableId: !Ref PublicRouteTable
+
+  # route table association for second public subnet
+  PublicSubnetRouteTableAssociation2:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet2
+      RouteTableId: !Ref PublicRouteTable
+
+  # route table for the private subnet hosting EC2 instance
+  PrivateRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref VPC
+      Tags:
+      - Key: Name
+        Value: Private Route Table
+
+  # route through NAT Gateway for private routetable
+  # this is kept open to the world for the demo site to be accesses
+  # please review this suitably, before adopting to a business use case.
+  PrivateRouteOne:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId: !Ref NatGateway1
+
+  # private route table association for the only private subnet
+  PrivateSubnetRouteTableAssociation1:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PrivateSubnet
+      RouteTableId: !Ref PrivateRouteTable
+
+  # ec2 instance profile
+  ReactComponentInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      InstanceProfileName: react-comp-instance-profile
+      Path: /
+      Roles: 
+       - !Ref EC2DefaultRole
+
+  #EC2 Instance to host the react app
+  EC2Instance1:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: ami-017c001a88dd93847 
+      InstanceType: m5.4xlarge
+      SecurityGroupIds:
+        - !Ref EC2SecurityGroup
+      SubnetId: !Ref PrivateSubnet
+      IamInstanceProfile: !Ref ReactComponentInstanceProfile
+      UserData: 
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          # general updates
+          yum update -y
+          # setup node and git
+          yum install -y gcc-c++ make
+          curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
+          yum install -y nodejs
+          yum install -y git
+          # code download
+          git clone https://${GithubOAuthToken}@github.com/${GithubUserName}/${GithubRepo}.git
+          # application code download for bet mf (port 3001)
+          cd rt-personalization-be-server/react-ux/bet
+          npm install
+          npm install file-loader --save-dev
+          npm start &
+          # application code download for player mf (port 3002)
+          cd ../player
+          npm install
+          npm install file-loader --save-dev
+          npm start &
+          # application code download for video mf (port 3003)
+          cd ../video
+          npm install
+          npm install file-loader --save-dev
+          npm start &
+          # this will ensure that we do not lose the command window.
+          screen
+    DependsOn: NatGateway1
+
+          
+  # ALB Security Groups
+  # this is kept open to the world for the demo site to be accesses
+  # please review this suitably, before adopting to a business use case.
+  ELBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: LoadBalancer Security Group
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 3001
+        ToPort: 3001
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 3002
+        ToPort: 3002
+        CidrIp: 0.0.0.0/0
+      - IpProtocol: tcp
+        FromPort: 3003
+        ToPort: 3003
+        CidrIp: 0.0.0.0/0
+
+  # EC2 Security Group
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: 'MicroFrontend EC2 Security Group'
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 3001
+        ToPort: 3001
+        SourceSecurityGroupId:
+          Fn::GetAtt:
+          - ELBSecurityGroup
+          - GroupId
+      - IpProtocol: tcp
+        FromPort: 3002
+        ToPort: 3002
+        SourceSecurityGroupId:
+          Fn::GetAtt:
+          - ELBSecurityGroup
+          - GroupId
+      - IpProtocol: tcp
+        FromPort: 3003
+        ToPort: 3003
+        SourceSecurityGroupId:
+          Fn::GetAtt:
+          - ELBSecurityGroup
+          - GroupId
+      
+  # Target Group for ALB
+  EC2TargetGroup1:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 15
+      HealthyThresholdCount: 5
+      Matcher:
+        HttpCode: '200'
+      Name: EC2TargetGroup1
+      Port: 3001
+      Protocol: HTTP
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: '20'
+      Targets:
+      - Id: !Ref EC2Instance1
+        Port: 3001
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref VPC
+
+  EC2TargetGroup2:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 15
+      HealthyThresholdCount: 5
+      Matcher:
+        HttpCode: '200'
+      Name: EC2TargetGroup2
+      Port: 3002
+      Protocol: HTTP
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: '20'
+      Targets:
+      - Id: !Ref EC2Instance1
+        Port: 3002
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref VPC
+
+  EC2TargetGroup3:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      HealthCheckIntervalSeconds: 30
+      HealthCheckProtocol: HTTP
+      HealthCheckTimeoutSeconds: 15
+      HealthyThresholdCount: 5
+      Matcher:
+        HttpCode: '200'
+      Name: EC2TargetGroup3
+      Port: 3003
+      Protocol: HTTP
+      TargetGroupAttributes:
+      - Key: deregistration_delay.timeout_seconds
+        Value: '20'
+      Targets:
+      - Id: !Ref EC2Instance1
+        Port: 3003
+      UnhealthyThresholdCount: 3
+      VpcId: !Ref VPC
+
+  # ALB listener
+  ALBListener1:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref EC2TargetGroup1
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 3001
+      Protocol: HTTP
+
+  ALBListener2:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref EC2TargetGroup2
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 3002
+      Protocol: HTTP
+
+  ALBListener3:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref EC2TargetGroup3
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 3003
+      Protocol: HTTP
+
+  # ALB load balancer
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: 'rt-prsn-ux-microfrontend'
+      Scheme: internet-facing
+      Subnets:
+      - !Ref PublicSubnet1
+      - !Ref PublicSubnet2
+      SecurityGroups:
+        - !GetAtt ELBSecurityGroup.GroupId
