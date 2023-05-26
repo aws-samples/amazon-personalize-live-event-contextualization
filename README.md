@@ -6,7 +6,7 @@ This is a sample code base to illustrate the concept of personalization and cont
 
 The section below provides step-by-step instructions to setup a demo site using React based micro-frontends, websockets and Amazon Personalize.
 
-**Step # 1: Setup  Amazon Personalize**
+**STEP # 1: Setup  Amazon Personalize**
 
 This is the first prerequisite for this solution. An custom user-personalization style campaign needs to be set up on Amazon Personalize. Please refer to this link for choosing a custom user-personalization recipe https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html. This link explains how to setup a custom user-personalization recipe on Amazon Personalize.
 
@@ -140,11 +140,17 @@ Once the campaign is setup successful, please note the ARN value. This value wil
     'arn:aws:personalize:<aws-region>:<aws-account>:campaign/soccer-ux' 
     
 
-**Step # 2 : Setup backend websocket server**
+**STEP # 2 : Setup Backend Websocket Server**
 
-The solution entails a backend websocket server which would push to all connected clients a set of personalization or contextualization instructions, every time a new event occurs during the live streaming. The core of the backend websocket server setup is a single step process, achieved by running the CloudFormation (CF) script as below:
+At the core of this solution is a websocket server that would push to all its connected clients a set of personalized or contextual, everytime a new event of interest occurs during a live streaming. Please refer to the blog at https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events/ for more conceptual details and relevance of this websocket server.
 
-`cloudFormationDeploymentScript/realtime_personalization_backend_deploy.yaml`
+<<<<<<<<<< TALK ABOUT THE ROLE & POLICY REQUIRED TO RUN A CF SCRIPT>>>>>>>>>>>>>>>>>
+
+The websocket server setup is a single-step process achieved by running this Amazon CloudFormation(CF) script at https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/realtime_personalization_backend_deploy.yaml. You may refer to this link to get familiarized with Amazon CloudFormation and how a CloudFormation template can be run from the AWS console, cli or SDK. 
+
+At the initialization stage, this particular CF template will expect a few inputs such as 
+
+
 
 The Amazon Personalize campaign ARN which was created in Step # 1, will be an input to this CF script, along with the AWS region (example: us-east-1) in which the campaign is deployed.
 
