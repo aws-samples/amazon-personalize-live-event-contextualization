@@ -148,17 +148,11 @@ At the core of this solution is a websocket server that would push to all its co
 
 The websocket server setup is a single-step process achieved by running this Amazon CloudFormation(CF) script at https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/realtime_personalization_backend_deploy.yaml. You may refer to this link to get familiarized with Amazon CloudFormation and how a CloudFormation template can be run from the AWS console, cli or SDK. 
 
-At the initialization stage, this particular CF template will expect a few inputs such as 
+While running this CloudFormation template, the following inputs are mandatory. These are 1/ Amazon Personalize campaign ARN which was created in Step # 1 of this instruction. 2/ AWS region (example: us-east-1) . The other two inputs such as the number of results per recommendation request and the stage variables may be left as it is. There is no additional source code that needs to be pulled for this deployment. The necessary code is embedded in the CloudFormation script itself. It may be noted, that this backend websocket server is based on the following AWS tutorial at https://docs.aws.amazon.com/apigateway/latest/developerguide/websocket-api-chat-app.html. Please refer to this for additional context.
 
+Wait for the CloudFormation script to complete successfully. Once the execution is completed, you can get the websocket endpoint from the output of the CloudFormation. It is essentially the Amazon APIGateway endpoint that was created as a part of this CloudFront execution. The websocket endpoint would look like the following:
 
-
-The Amazon Personalize campaign ARN which was created in Step # 1, will be an input to this CF script, along with the AWS region (example: us-east-1) in which the campaign is deployed.
-
-This backend personalization server is based on the following tutorial which explains in detail how a serverless websocket server can be deployed on AWS:
-
- - https://docs.aws.amazon.com/apigateway/latest/developerguide/websocket-api-chat-app.html
-
-Once the CF script is executed successfully,  note down the websocket end point which will be required as an input into the front-end application. The websocket endpoint is of the form - 'wss://<endpoint>/dev' 
+- 'wss://<endpoint>/dev' 
 
 **Step # 3 : Populate event manager table**
 
