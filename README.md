@@ -10,7 +10,7 @@ The section below provides step-by-step instructions to setup a demo site using 
 
 This is the first prerequisite for this solution. An custom user-personalization style campaign needs to be set up on Amazon Personalize. Please refer to this link for choosing a custom user-personalization recipe https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html. This link explains how to setup a custom user-personalization recipe on Amazon Personalize.
 
-In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following link to understand how custom data sets and schemas work for Amazon Personalize. https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set.
+In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following link to understand how custom data sets and schemas work for Amazon Personalize. https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set. As outlined in the  blog https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events, attached below are sample datasets to understand the dataset better.
 
 ***User Interaction Schema*** :
 
@@ -41,6 +41,10 @@ In order to setup the this custom user-personalization solution, the training da
           "type": "integer"
       },
  ]
+ 
+ ![image](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/assets/122004204/d4a04384-5f91-46da-9eef-debb9165baec)
+
+
 
 ***User Schema*** :
 
@@ -62,6 +66,9 @@ In order to setup the this custom user-personalization solution, the training da
           "type": "string"
       }
  ]
+ 
+ 
+![image](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/assets/122004204/0cb5727e-bf0b-448b-b673-b22cd637ebdd)
 
 ***Item Schema*** :
 
@@ -115,8 +122,13 @@ In order to setup the this custom user-personalization solution, the training da
           "type": "string"
       }
  ]
+ 
+ 
+ ![image](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/assets/122004204/3cd20478-05e5-462a-971a-023adaeae679)
 
-Users of this solution are required to ingest similar data from their enterprise systems or synthetize the same programmatically, if only being run to test & validate the concept.
+
+
+NOTE: It may be noted that the users of this solution are required to ingest similar data from their enterprise systems or synthetize the same programmatically, if only being run to test & validate the concept.  
 
 
 
