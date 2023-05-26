@@ -6,7 +6,7 @@ This is a sample code base to illustrate the concept of personalization and cont
 
 The section below provides step-by-step instructions to setup a demo site using React based micro-frontends, websockets and Amazon Personalize.
 
-**STEP # 1: Setup  Amazon Personalize**
+**STEP # 1: SETUP AMAZON PERSONALIZE**
 
 This is the first prerequisite for this solution. An custom user-personalization style campaign needs to be set up on Amazon Personalize. Please refer to this link for choosing a custom user-personalization recipe https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html. This link explains how to setup a custom user-personalization recipe on Amazon Personalize.
 
@@ -140,7 +140,7 @@ Once the campaign is setup successful, please note the ARN value. This value wil
     'arn:aws:personalize:<aws-region>:<aws-account>:campaign/soccer-ux' 
     
 
-**STEP # 2 : Setup Backend Websocket Server**
+**STEP # 2 : SETUP BACKEND WEBSOCKET SERVER**
 
 At the core of this solution is a websocket server that would push to all its connected clients a set of personalized or contextual, everytime a new event of interest occurs during a live streaming. Please refer to the blog at https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events/ for more conceptual details and relevance of this websocket server.
 
@@ -152,7 +152,7 @@ While running this CloudFormation template, the following inputs are mandatory. 
 
 Wait for the CloudFormation script to complete successfully. Once the execution is completed, you can get the websocket endpoint from the output of the CloudFormation. It is essentially the Amazon APIGateway endpoint that was created as a part of this CloudFront execution. The websocket endpoint would look like the following:
 
-- 'wss://<endpoint>/dev' 
+wss://<API_GATEWAY_URL>/dev
 
 **Step # 3 : Populate event manager table**
 
