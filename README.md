@@ -41,9 +41,9 @@ In order to setup the this custom user-personalization solution, the training da
           "type": "integer"
       },
  ]
- 
- ![image](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/assets/122004204/d4a04384-5f91-46da-9eef-debb9165baec)
 
+
+<img width="772" alt="image" src="https://github.com/aws-samples/amazon-personalize-live-event-contextualization/assets/122004204/f4547db3-a0a2-43a8-a26c-15587c529450">
 
 
 ***User Schema*** :
