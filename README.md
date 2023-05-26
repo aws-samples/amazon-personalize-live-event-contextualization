@@ -12,8 +12,8 @@ This is the first prerequisite for this solution. An custom user-personalization
 
 In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following link to understand how custom data sets and schemas work for Amazon Personalize. https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set.
 
-**user interaction**
-======================
+***User Interaction Schema*** :
+
 
 "user_interaction_schema": [
       {
@@ -42,8 +42,7 @@ In order to setup the this custom user-personalization solution, the training da
       },
  ]
 
-**user**
-==========
+***User Schema*** :
 
 "user_schema": [
       {
@@ -64,8 +63,7 @@ In order to setup the this custom user-personalization solution, the training da
       }
  ]
 
-**item**
-=========
+***Item Schema*** :
 
 "item_schema": [
       {
