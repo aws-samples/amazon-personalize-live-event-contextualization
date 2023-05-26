@@ -8,6 +8,117 @@ The section below provides step-by-step instructions to setup a demo site using 
 
 **Step # 1: Setup  Amazon Personalize**
 
+This is the first prerequisite for this solution. An custom user-personalization style campaign needs to be set up on Amazon Personalize. Please refer to this link for choosing a custom user-personalization recipe https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html. This link explains how to setup a custom user-personalization recipe on Amazon Personalize.
+
+In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following link to understand how custom data sets and schemas work for Amazon Personalize. https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set.
+
+**user interaction**
+
+"user_interaction_schema": [
+      {
+          "name": "USER_ID",
+          "type": "string"
+      },
+      {
+          "name": "ITEM_ID",
+          "type": "string"
+      },
+      {
+          "name": "EVENT_TYPE",
+          "type": "string"
+      },
+      {
+          "name": "LOCATION",
+          "type": "string"
+      },
+      {
+          "name": "TIMESTAMP",
+          "type": "string"
+      },
+      {
+          "name": "IMPRESSION",
+          "type": "integer"
+      },
+ ]
+
+**user**
+
+"user_schema": [
+      {
+          "name": "USER_ID",
+          "type": "string"
+      },
+      {
+          "name": "AGE",
+          "type": "integer"
+      },
+      {
+          "name": "gender",
+          "type": "string"
+      },
+      {
+          "name": "country",
+          "type": "string"
+      }
+ ]
+
+**item**
+"item_schema": [
+      {
+          "name": "USER_ID",
+          "type": "string"
+      },
+      {
+          "name": "ITEM_LABEL",
+          "type": "integer"
+      },
+      {
+          "name": "ITEM_TYPE",
+          "type": "string"
+      },
+      {
+          "name": "TWITTER_FOLLOWER_COUNT",
+          "type": "string"
+      },
+      {
+          "name": "INSTA_FOLLOWER_COUNT",
+          "type": "string"
+      },
+      {
+          "name": "FIFA_OVR_RATE",
+          "type": "string"
+      },
+      {
+          "name": "FIFA_POT_RATE",
+          "type": "string"
+      },
+      {
+          "name": "FIFA_STATS",
+          "type": "string"
+      },
+      {
+          "name": "FIFA_STATS",
+          "type": "string"
+      },
+      {
+          "name": "COUNTRY",
+          "type": "string"
+      },
+      {
+          "name": "IS_MONETIZE",
+          "type": "string"
+      },
+      {
+          "name": "IS_ENGAGE",
+          "type": "string"
+      }
+ ]
+
+Users of this solution are required to ingest similar data from their enterprise systems or synthetize the same programmatically, if only being run to test & validate the concept.
+
+
+
+
 A user-item style campaign needs to be setup on Amazon Personalize. Please refer to the blog https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events/ to understand the type of data schema required for user, item and user-item metadata. we will try to add some sample data in this repository itself for better reference. 
 
 As outlined in the blog,  micro-frontend components are considered as "items" in the Amazon Personalize setup for this campaign. Here are some useful links for tutorials on how to setup a  campaign in Amazon Personalize, or automate the campaign creation process using scripts:
