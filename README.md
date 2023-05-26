@@ -10,7 +10,9 @@ The section below provides step-by-step instructions to setup a demo site using 
 
 This is the first prerequisite for this solution. An custom user-personalization style campaign needs to be set up on Amazon Personalize. Please refer to this link for choosing a custom user-personalization recipe https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html. This link explains how to setup a custom user-personalization recipe on Amazon Personalize.
 
-In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following link to understand how custom data sets and schemas work for Amazon Personalize. https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set. As outlined in the  blog https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events, attached below are sample datasets to understand the dataset better.
+In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following link to understand how custom data sets and schemas work for Amazon Personalize. https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set. 
+
+As outlined in the  blog https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events, attached below are sample datasets to understand the dataset and their associated context better. For example, "items" over here refer to the micro-frontend components of the consumer application that is meant to deliver a personalized experience (refer to the blog).
 
 ***User Interaction Schema*** :
 
@@ -126,23 +128,17 @@ In order to setup the this custom user-personalization solution, the training da
  
  ![image](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/assets/122004204/3cd20478-05e5-462a-971a-023adaeae679)
 
-
-
 NOTE: It may be noted that the users of this solution are required to ingest similar data from their enterprise systems or synthetize the same programmatically, if only being run to test & validate the concept.  
 
-
-
-
-A user-item style campaign needs to be setup on Amazon Personalize. Please refer to the blog https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events/ to understand the type of data schema required for user, item and user-item metadata. we will try to add some sample data in this repository itself for better reference. 
-
-As outlined in the blog,  micro-frontend components are considered as "items" in the Amazon Personalize setup for this campaign. Here are some useful links for tutorials on how to setup a  campaign in Amazon Personalize, or automate the campaign creation process using scripts:
+Here are some additional useful links on how to setup a campaign in Amazon Personalize, or automate the campaign creation process using scripts:
 
  1. https://docs.aws.amazon.com/personalize/latest/dg/getting-started.html
  2. https://github.com/aws-samples/amazon-personalize-samples
 
-Once the campaign is setup successful, please note the ARN value. This value will be required in configuring the next steps. The Amazon Personalize campaign ARN would typically look like this:
+Once the campaign is setup successful, please note the ARN value. This value will be required in configuring the next steps. The Amazon Personalize campaign ARN string would look similar to the following string, assuming the campaign name is set to "soccer-ux"
 
     'arn:aws:personalize:<aws-region>:<aws-account>:campaign/soccer-ux' 
+    
 
 **Step # 2 : Setup backend websocket server**
 
