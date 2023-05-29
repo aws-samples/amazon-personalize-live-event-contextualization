@@ -181,11 +181,22 @@ It will be useful to insert a single sample record into the DynamoDB table at th
       }
     }
 
-**Step # 4 : Populate item metadata table**
+**STEP # 4 : POPULATE METADATA TABLE**
 
-For the personalization service to look up the item metadata, the DynamoDB  table 'rt_personalize_soccer_ux_item' is created. This table needs to be pre-populated with the same item data which was used to train the Amazon Personalize campaign. Use the following script to load item data into this table:
+While the CloudFormation [script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/realtime_personalization_backend_deploy.yaml) was executed in the earlier step, it created a table in Amazon DynamoDB by the name of "rt_personalize_soccer_ux_item". This table holds metadata for the different "items" (as nomenclatured in Amazon Personalize) or types of UX components that can be used to decorate the user experience (web page). Please refer to a [sample file](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/data/soccer-ux-sample-item.csv) in this repository that details how the "items" records should look like. This data file is good enough to run this demo application, but would need to be customized and extended based on distinct business needs. 
 
-    'personalizeItemMetadataDynamoDBLoad/load_personalize_item_metadata_to_ddb.py'
+A sample Python script is made available at this [location](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/personalizeItemMetadataDynamoDBLoad/load_personalize_item_metadata_to_ddb.py). This python script can be used to populate the DynamoDB table "rt_personalize_soccer_ux_item" with the sample data as referred to above. Please feel free to modify the script for any variations in the python data. 
+
+Following are some key instructions to run this python script:
+
+	1. Download the python script on your local environment
+	2. Install Python 3.8 or above to be able to run this script
+	3. Install the python libray "boto3", by using the command "pip install boto3". You may need to install "pip" first, if not already there on your system.
+	4. Follow this [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) to set up AWS CLI. This will ensure that sufficient permissions are available to invoke AWS CLI and resource access.
+	5. In the above step, ensure the permission includes policies to write to a DynamoDB database. This may be passed on through the secret key (not advised on production), or the assigned role, if running out of an EC2 terminal.
+	6. open the python script to update the AWS region (example: us-east-1) and the correct path of the datafile.
+	7. Run the script from the console as "python3 load_personalize_item_metadata_to_ddb.py"
+	8. Once the execution completes gracefully, visit the Amazon DyanmoDB console to verify that the data is indeed loaded. Refer to this [link](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-5.html) for guidance.
 
 
 **Step # 5 : Setup the event simulation script**
