@@ -154,7 +154,10 @@ Wait for the CloudFormation script to complete successfully. Once the execution 
 
 wss://<API_GATEWAY_URL>/dev
 
-**Step # 3 : Populate event manager table**
+**STEP # 3 : POPULATE EVENT MANAGER TABLE**
+
+While the cloudformation [script] (https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript)/realtime_personalization_backend_deploy.yaml was executed in the previous step, it created a table in Amazon DynamoDB by the name of "rt_personalize_event_manager". If you are not familiar with Amazon DynamoDB, you can read more about it at this [link] (https://aws.amazon.com/dynamodb/) . 
+
 
 As a part of execution of the above mentioned CF script a Amazon DynamoDB table is created with the name of 'rt_personalize_event_manager'. This table will manage the state of live streaming events. This table has streaming enabled, such that all data changed is streamed and captured through an AWS Lambda function. This Lambda function will capture the change event, invoke Amazon Personalize campaign for every single consumer, and with a given context and push customization instructions to the connected client applications. At this stage populate the DynamoDB table with a sample record (as a primer):
 
