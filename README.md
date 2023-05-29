@@ -189,14 +189,14 @@ A sample Python script is made available at this [location](https://github.com/a
 
 Following are some key instructions to run this python script:
 
-	1. Download the python script on your local environment
-	2. Install Python 3.8 or above to be able to run this script
-	3. Install the python libray "boto3", by using the command "pip install boto3". You may need to install "pip" first, if not already there on your system.
-	4. Follow this [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) to set up AWS CLI. This will ensure that sufficient permissions are available to invoke AWS CLI and resource access.
-	5. In the above step, ensure the permission includes policies to write to a DynamoDB database. This may be passed on through the secret key (not advised on production), or the assigned role, if running out of an EC2 terminal.
-	6. open the python script to update the AWS region (example: us-east-1) and the correct path of the datafile.
-	7. Run the script from the console as "python3 load_personalize_item_metadata_to_ddb.py"
-	8. Once the execution completes gracefully, visit the Amazon DyanmoDB console to verify that the data is indeed loaded. Refer to this [link](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-5.html) for guidance.
+1. Download the python script on your local environment
+2. Install Python 3.8 or above to be able to run this script
+3. Install the python libray "boto3", by using the command "pip install boto3". You may need to install "pip" first, if not already there on your system.
+4. Follow this [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) to set up AWS CLI. This will ensure that sufficient permissions are available to invoke AWS CLI and resource access.
+5. In the above step, ensure the permission includes policies to write to a DynamoDB database. This may be passed on through the secret key (not advised on production), or the assigned role, if running out of an EC2 terminal.
+6. open the python script to update the AWS region (example: us-east-1) and the correct path of the datafile.
+7. Run the script from the console as "python3 load_personalize_item_metadata_to_ddb.py"
+8. Once the execution completes gracefully, visit the Amazon DyanmoDB console to verify that the data is indeed loaded. Refer to this [link](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-5.html) for guidance.
 
 
 **Step # 5 : Setup the event simulation script**
