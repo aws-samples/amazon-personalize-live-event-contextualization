@@ -156,6 +156,8 @@ wss://<API_GATEWAY_URL>/dev
 
 **STEP # 3 : POPULATE EVENT MANAGER TABLE**
 
+While the CloudFormation [script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/realtime_personalization_backend_deploy.yaml) was executed in the previous step, it created a table in Amazon DynamoDB by the name of "rt_personalize_event_manager". 
+
 While the cloudformation [script ]([https://aws.amazon.com/dynamodb/](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/realtime_personalization_backend_deploy.yaml) was executed in the previous step, it created a table in Amazon DynamoDB by the name of "rt_personalize_event_manager". If you are not familiar with Amazon DynamoDB, you can read more about it at this [link] (https://aws.amazon.com/dynamodb/) . 
 
 
