@@ -237,9 +237,9 @@ Once the ALB is located within the CloudFormation outputs, note down its URL (A 
 
 At this stage, you can contruct three URLs, one for each of the micro-frontends. Please note that each of these applications are standalone in nature with static images and text. each of these applications should work out-of-the-box once the URL is hit on the browser. The three sets of URL are as follow
 
-1. Demo betting module - "http://<application-load-balancer-url-obtained-from-cloudformation-output>:3001"
-2. Demo player module - "http://<application-load-balancer-url-obtained-from-cloudformation-output>:3002"
-3. Demo video player module - "http://<application-load-balancer-url-obtained-from-cloudformation-output>:3003"
+1. Demo betting module - "http://application-load-balancer-url-obtained-from-cloudformation-output:3001"
+2. Demo player module - "http://application-load-balancer-url-obtained-from-cloudformation-output:3002"
+3. Demo video player module - "http://application-load-balancer-url-obtained-from-cloudformation-output:3003"
 
 Please visit each of the URLs to see a static application comes up for each of micro-frontend component. Please ensure that your corporate firewall, browser, or network setting does not block requests to HTTP endpoints or non-standard URLS.
 	
