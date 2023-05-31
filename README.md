@@ -193,15 +193,25 @@ Following are some key instructions to run this python script:
 2. Install Python 3.8 or above to be able to run this script
 3. Install the python libray "boto3", by using the command "pip install boto3". You may need to install "pip" first, if not already there on your system.
 4. Follow this [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) to set up AWS CLI. This will ensure that sufficient permissions are available to invoke AWS CLI and resource access.
-5. In the above step, ensure the permission includes policies to write to a DynamoDB database. This may be passed on through the secret key (not advised on production), or the assigned role, if running out of an EC2 terminal.
+5. In the above step, ensure the permission includes policies to write to a DynamoDB database. This may be passed on through the secret key (not advised on production), or the assigned role, if running out of an EC2 terminal. It may be noted that such persmissions can be granted through IAM Roles (if running on EC2), or access keys (not recommended for production), or environment variables.
 6. open the python script to update the AWS region (example: us-east-1) and the correct path of the datafile.
-7. Run the script from the console as "python3 load_personalize_item_metadata_to_ddb.py"
+7. Run the script from the command line (terminal) as "python3 load_personalize_item_metadata_to_ddb.py"
 8. Once the execution completes gracefully, visit the Amazon DyanmoDB console to verify that the data is indeed loaded. Refer to this [link](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/getting-started-step-5.html) for guidance.
 
 
-**Step # 5 : Setup the event simulation script**
+** STEP # 5 : SETUP THE EVENT SIMULATION SCRIPT **
 
-Set up the script at `'eventManagerSimulationScript/live_event_simulator.py'` to run from command line. This script will run within a loop, simulating live event scenario by updating the event table at preset intervals. This script is meant only for demo. In real world, a data streaming system needs to be developed and integrated to analyze and capture events of interest. Keep the script running to ensure that events are emitted which can be further picked up by the websocket server.
+A sample simulation script is provided at the following [location](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/eventManagerSimulationScript/live_event_simulator.py). The purpose of this script is to generate random events and simulating "real-match-like" events. This script is only useful for testing purposes. In real world this data stream will be originating from social media or live match scores, or similar other applications. 
+
+1. Download the python script on your local environment
+2. Install Python 3.8 or above to be able to run this script
+3. Install the python libray "boto3", by using the command "pip install boto3". You may need to install "pip" first, if not already there on your system.
+4. Follow this [link](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-quickstart.html) to set up AWS CLI. This will ensure that sufficient permissions are available to invoke AWS CLI and resource access.
+5. In the above step, ensure the permission includes policies to write to a DynamoDB database. This may be passed on through the secret key (not advised on production), or the assigned role, if running out of an EC2 terminal. It may be noted that such persmissions can be granted through IAM Roles (if running on EC2), or access keys (not recommended for production), or environment variables.
+6. open the python script to update the AWS region (example: us-east-1) and the "TIME_TO_SLEEP" variable. This second variable controls the time it takes between two random events. Feel free to modify the response of the events, in case this simulation is going to be integrated and deployed with other systems and contexts.
+7. Run the script from the command line (terminal) as "python3 live_event_simulator.py"
+8. This script is designed to run in an infinite loop and as such should be kept running while testing the solution.
+
 
 **Step # 6 : Test basic setup of the websocket server**
 
