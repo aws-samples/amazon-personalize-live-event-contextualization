@@ -210,17 +210,22 @@ A sample simulation script is provided at the following [location](https://githu
 5. In the above step, ensure the permission includes policies to write to a DynamoDB database. This may be passed on through the secret key (not advised on production), or the assigned role, if running out of an EC2 terminal. It may be noted that such persmissions can be granted through IAM Roles (if running on EC2), or access keys (not recommended for production), or environment variables.
 6. open the python script to update the AWS region (example: us-east-1) and the "TIME_TO_SLEEP" variable. This second variable controls the time it takes between two random events. Feel free to modify the response of the events, in case this simulation is going to be integrated and deployed with other systems and contexts.
 7. Run the script from the command line (terminal) as "python3 live_event_simulator.py"
-8. This script is designed to run in an infinite loop and as such should be kept running while testing the solution.
+
+This script is designed to run in an infinite loop and as such should be kept running while testing the solution.
 
 
-**Step # 6 : Test basic setup of the websocket server**
+**STEP # 6 : TEST THE BASIC SETUP OF WEBSOCKET SERVER**
 
-Test the basic connectivity and setup by running the following commands:
+At this stage, it should be possible to test the basic setup of the websocket server, provided all the previous steps have completed successfully. The test is through a command line (terminal window of windows, Linux or Mac). Please follow the following steps.
 
-	1. CLI input: wscat -c 'wss://<endpoint>/dev' 
-	2. CLI input: { "action": "sendmessage", "consumer_id": "1", "device_id": "d1", "content_id": "c1"} 
+1. Ensure that NPM (node package manager) is installed on your machine. Refer to this [link](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for additional help.
+2. Ensure that "wscat" utility is installed on your machine. Refer to this [link](https://www.npmjs.com/package/wscat) for installation of "wscat" on your machine.
+3. On the command line of your terminal type the following command "wscat -c  'wss://<API_GATEWAY_URL>/dev' ". The websocket URL is the same obtained in the earlier step.
+4. Once the connection is established, run the second command as ' { "action": "sendmessage", "consumer_id": "1", "device_id": "d1", "content_id": "c1"} '
+5. You should see a success message in response to both the CLI inputs
+6. Ensure that the simulation script is running gracefully (runs in an infinite loop, as explained above)
+7. If everything is running fine, you should be able to see a set of contextual recommendation (simulated) on the console.
 
-If the setup is done correctly, you should get a success message in response to both these CLI requests. Moreover, keep the simulation script running on step # 4, to see push updates to the websocket client with a set of item recommendations. 
 
 
 **Step # 7 : deploy react micro-frontend components**
