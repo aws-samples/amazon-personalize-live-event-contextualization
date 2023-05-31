@@ -244,22 +244,35 @@ At this stage, you can contruct three URLs, one for each of the micro-frontends.
 Please visit each of the URLs to see a static application comes up for each of micro-frontend component. Please ensure that your corporate firewall, browser, or network setting does not block requests to HTTP endpoints or non-standard URLS.
 	
 
-**Step # 8 : Deploy react home / container app **
+**STEP # 8 : DEPLOYMENT OF HOME / CONTAINER APP **
 	
-Deployment of the home or the container, would need a couple of configuration changes on the source code of the app, based on the inputs from the deployments done in the previous steps. These inputs are 
+A ReactJS based container application is provided as a part of this solution. This application intercepts messages from the websocket server that was setup in the previous steps of this exercise. Based on the contextual recommendations received from the websocket server, this application dynamically invokes different micro-frontends to  provide the right experience to the user at the right point in time. The application therefore needs to be configured such that it is aware of the websocket server endpoint and also the three micro-frontends that are running in a different application context.
 
-	1. URI for the websocket server
-	2. URIs for the micro-frontends for bet, player and video 
+This container application is build using ReactJS and hosted on EC2 server running on port 3000. There is one  application load balancer (ALB) provisioned to reach out to this container application. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-home-container.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. 
 
-Here are the following changes:
+Once the CloudFormation execution is completed successfully it should create an application load balancer (ALB). Please refer to this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) to familiarize yourself on ALB is required. If the CloudFormation script was run from the AWS console, you can navigate to CloudFormation > Stacks > (Selcted Stack). Click on the "Outputs" tab of the selected stack and look for the Application Load Balancer (ALB) that was created as a part of execution. Please note that CloudFormation stacks are region specific and you stick to the same region. Alternatively, you can extract the ALB output using [AWS CLI commands](https://aws.amazon.com/cli/).
 
- - In the `'react-ux/home/webpack.config.js'` file, look for the key `plugins -> remotes`. For each of the remote component entries update with the application load balancer URI as was obtained in Step # 6. Save and close the file.
+Once the ALB is located within the CloudFormation outputs, note down its URL (A record). Amazon ALB has some other sub-components that are created as part of this script. While this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) has the details, an ALB will have a listeners. Listeners point to target groups and the target group frontends the EC2 instance that hosts the React application. The target group runs "health checks" to ensure that the EC2 is healthy by pinging a pre-configured port on the EC2 instance. You can refer to this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html) on how the health check of the target groups of application load balancer works. Verify that the target group health check passed.
 
- - In the `'react-ux/home/src/App.js'` file, update the entry for `'websocket_server_url'` based on the websocket endpoint obtained in Step # 2.
-	
-Once both the files are saved, push the updated files back to the git repository (git add, commit, push, etc.)
-	
-Now run the deployment script `'cloudFormationDeploymentScript/ux-microfrontend-deploy-home-container.yml'.` Once the script execution completes, navigate to review if the newly created application load balancer and if the target-group health checks have passed. If everything looks good, hit the URL of this load balancer on port 3000, to load the container application. The video micro-frontend should load directly. Verify the browser console log to ensure that the websocket connection is successful and personalization recommendations are pushed at preset intervals
+In the "Outputs" section of the CloudFormation stack, also note down the DNS of the EC2 instance that was created. This is the EC2 instance that is hosting the React container application. It is required to login to this EC2 instance and update a few configurations as detailed through the pointers below
+
+1. Refer to this [link](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html) to learn the different ways to connect to an EC2 instance.
+2. Ensure that you are in the home directory of "ec2-user"
+3. Change directory to "rt-personalization-be-server/react-ux/home"
+4. In this directory, open the file "webpack.config.js"
+5. Look for the key "plugins -> remotes"
+6. For each of the remote component entries update with the application loadbalancer DNS for micro-frontends (Refer STEP # 7)
+7. Save and close the file.
+8. Change directory to "src" and open the "App.js" file. 
+9. Update the entry to "websocket_server_url", based on the websocket endpoint obtained in STEP # 2
+10. Save and close the file.
+11. You can now logout of the EC2 console
+
+NOTE: If you are not comfortable logging in to the EC2 console, you can download (pull) the application code into your local system. Update the configuration changes (as outlined in the section above), and copy over the changed files to the EC2 console that is hosting the container application. Moreover, in production setups, this configuration change should be handled automatically through parameter stores such as Amazon SSM, consul, or a parameter entry in Amazon DynamoDB. The ReactJS application code should be modified to pick up these parameters from the selected paramter store.
+
+After the above steps are successfully completed, open your favorite browser to hit the URL for the application load balancer created for this container application on port number 3000. The URL structure will look as "http://application-load-balancer-for-container-react-app:3000". You should be able to see the application loaded, and the widgets changing dynamically based on the inputs received from the websocket server. Moreover, you can open the browser console log to see if the application connected gracefully to the websocket servers, and contextual recommendation messages are received periodically.
+
+
 
 **Additional Notes **
 
