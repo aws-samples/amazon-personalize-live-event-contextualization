@@ -229,20 +229,19 @@ At this stage, it should be possible to test the basic setup of the websocket se
 
 **STEP # 7 : DEPLOY REACT MICRO-FRONTEND COMPONENTS**
 
-Three sample micro-frontend applications are made available to enable end-to-end testing. This section explains how these micro-frontend components can be deployed. All these applications are build using ReactJS and hosted on EC2 servers running on different ports. There is one single application load balancer (ALB) provisioned to reach out to these three micro-frontend applications. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-component.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. 
+Three sample micro-frontend applications are made available to enable end-to-end testing. These micro-frontend applications are demo / skeletal version for a betting module, player profile module, and a video player module. This section explains how these micro-frontend components can be deployed. All these applications are build using ReactJS and hosted on EC2 servers running on different ports. There is one single application load balancer (ALB) provisioned to reach out to these three micro-frontend applications. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-component.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. 
 
+Once the CloudFormation execution is completed successfully it should create an application load balancer (ALB). Please refer to this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) to familiarize yourself on ALB is required. If the CloudFormation script was run from the AWS console, you can navigate to CloudFormation > Stacks > (Selcted Stack). Click on the "Outputs" tab of the selected stack and look for the Application Load Balancer (ALB) that was created as a part of execution. Please note that CloudFormation stacks are region specific and you stick to the same region. Alternatively, you can extract the ALB output using [AWS CLI commands](https://aws.amazon.com/cli/).
 
-There are three micro-frontend components bet, player, and video which are used for this demo. Run the following CloudFormation script to install these three react micro-frontend components on an EC2 server:
+Once the ALB is located within the CloudFormation outputs, note down its URL (A record). Amazon ALB has some other sub-components that are created as part of this script. While this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) has the details, an ALB will have a listeners. Listeners point to target groups and the target group frontends the EC2 instance that hosts the React application. The target group runs "health checks" to ensure that the EC2 is healthy by pinging a pre-configured port on the EC2 instance. You can refer to this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/target-group-health-checks.html) on how the health check of the target groups of application load balancer works. Verify that the target group health check passed.
 
-    'cloudFormationDeploymentScript/ux-microfrontend-deploy-component.yml' 
+At this stage, you can contruct three URLs, one for each of the micro-frontends. Please note that each of these applications are standalone in nature with static images and text. each of these applications should work out-of-the-box once the URL is hit on the browser. The three sets of URL are as follow
 
-When the CF execution is complete, review the created application load balancer (ALB) and note down the URL (A record).  Verify that the target-group health checks have passed. It may take few seconds to minutes after deployment completion for all the health checks to pass. 
+1. Demo betting module - "http://<application-load-balancer-url-obtained-from-cloudformation-output>:3001"
+2. Demo player module - "http://<application-load-balancer-url-obtained-from-cloudformation-output>:3002"
+3. Demo video player module - "http://<application-load-balancer-url-obtained-from-cloudformation-output>:3003"
 
-There are thus a set of 3 URLs, one each for the above-mentioned micro-frontend component. Test these URLs independently to verify that a successful response is obtained (the page loads successfully)
-
-	1. http://<load-balancer-url>:3001 [this is for the bet module]
-	2. http://<load-balancer-url>:3002 [this is for the player module]
-	3. http://<load-balancer-url>:3003 [this is for the video module]
+Please visit each of the URLs to see a static application comes up for each of micro-frontend component. Please ensure that your corporate firewall, browser, or network setting does not block requests to HTTP endpoints or non-standard URLS.
 	
 
 **Step # 8 : Deploy react home / container app **
