@@ -243,6 +243,8 @@ At this stage, you can contruct three URLs, one for each of the micro-frontends.
 
 Please visit each of the URLs to see a static application comes up for each of micro-frontend component. Please ensure that your corporate firewall, browser, or network setting does not block requests to HTTP endpoints or non-standard URLS.
 	
+	
+	
 
 **STEP # 8 : DEPLOYMENT OF HOME / CONTAINER APP **
 	
