@@ -227,9 +227,11 @@ At this stage, it should be possible to test the basic setup of the websocket se
 7. If everything is running fine, you should be able to see a set of contextual recommendation (simulated) on the console.
 
 
+**STEP # 7 : DEPLOY REACT MICRO-FRONTEND COMPONENTS**
 
-**Step # 7 : deploy react micro-frontend components**
-	
+Three sample micro-frontend applications are made available to enable end-to-end testing. This section explains how these micro-frontend components can be deployed. All these applications are build using ReactJS and hosted on EC2 servers running on different ports. There is one single application load balancer (ALB) provisioned to reach out to these three micro-frontend applications. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-component.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. 
+
+
 There are three micro-frontend components bet, player, and video which are used for this demo. Run the following CloudFormation script to install these three react micro-frontend components on an EC2 server:
 
     'cloudFormationDeploymentScript/ux-microfrontend-deploy-component.yml' 
