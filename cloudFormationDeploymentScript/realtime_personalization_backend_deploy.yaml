@@ -843,6 +843,9 @@ Resources:
       PolicyName: rtPersonalizeManageConnectionPolicy
       Roles:
         - !Ref rtPersonalizeEventManagerServiceHandlerRole
-  
 
+# output the api gateway url
+Outputs:
+  apiGatewayInvokeURL:
+	  Value: !Sub wss://${rtPersonalizationWebSocketApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${rtPersonalizeApiGatewayStage}
 
