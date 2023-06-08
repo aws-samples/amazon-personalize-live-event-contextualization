@@ -160,6 +160,7 @@ Resources:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: 'rt_personalize_ddb_event_stream_handler'
+      Timeout: 30
       Code:
         ZipFile: |-
                 import json
@@ -340,6 +341,7 @@ Resources:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: 'rt_personalize_websocket_connection_handler'
+      Timeout: 30
       Code:
         ZipFile: |-
           import json
@@ -389,6 +391,7 @@ Resources:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: 'rt_personalize_websocket_sendmessage_handler'
+      Timeout: 30
       Code:
         ZipFile: |-
           import json
@@ -448,6 +451,7 @@ Resources:
     Type: 'AWS::Lambda::Function'
     Properties:
       FunctionName: 'rt_personalize_websocket_disconnect_handler'
+      Timeout: 30
       Code:
         ZipFile: |-
           import json
