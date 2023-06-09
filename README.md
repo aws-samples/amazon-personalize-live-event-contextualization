@@ -276,12 +276,28 @@ After the above steps are successfully completed, open your favorite browser to 
 
 
 
-**Additional Notes **
+** Frequently Asked Questions **
 
- - Ensure that the principal executing the CF scripts has sufficient privileges (configured by IAM roles and policies) to create the resources necessary for this project.
- - 
-* Change the title in this README
-* Edit your repository description on GitHub
+Question: Why I am not able to create the CloudFormation stack?
+Answer: Ensure the IAM user through which you are logged in to the AWS console (or CLI) has sufficient permission to list or create stacks. This is explained in the earlier sections.
+
+Question: The stack deployment has completed successfully, but I am not able to connect to the websocket server. Why?
+Answer: Please check if your firewall, or corporate proxy blocks such access.
+
+Question: Why are the microfrontend components all running on the same EC2 machine? Does it not beat the purpose of microfrontends?
+Answer: In production systems, ideally each microfront would be running on their own containers. Applications are deployed here as such only for the purpose of a demo.
+
+Question: Can I deploy this application as it is on my production environment?
+Answer: This application would work on any environment, but we strongly encourage to validate the deployment agains the [six pillar of architecture](https://www.google.com/search?client=firefox-b-e&q=aws+architecture+six+pillars), validating against cost, coroporate security requirements, performance, resilience, etc.
+
+Question: Can I contribute to this project?
+Answer: Yes. You can always contribute your changes through a pull request.
+
+Question: I have never worked on Personalize before. How can I create a basic campaign to complete this exercise?
+Answer: You can familiarize yourself on Amazon Personalize through by reading through [here](https://docs.aws.amazon.com/personalize/latest/dg/getting-started.html). This [git repo](https://github.com/aws-samples/amazon-personalize-samples) has a variety of code samples to get started with.
+
+Question: I already have an Amazon Personalize campaign running on a different AWS account. I will like to try this solution on a different account. will it be possible.
+Answer: Yes, you can use the concept of cross-acount roles in AWS. Read more about this concept [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/tutorial_cross-account-with-roles.html).
 
 ## Security
 
