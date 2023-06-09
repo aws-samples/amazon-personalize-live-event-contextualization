@@ -368,3 +368,8 @@ Resources:
       - !Ref PublicSubnet2
       SecurityGroups:
         - !GetAtt ELBSecurityGroup.GroupId
+
+Outputs:
+	LoadBalancerUrl:
+    	Description: The URL of the ALB
+    	Value: !GetAtt ApplicationLoadBalancer.DNSName
