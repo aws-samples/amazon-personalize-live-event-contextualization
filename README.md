@@ -144,7 +144,7 @@ Once the campaign is setup successful, please note the ARN value. This value wil
 
 At the core of this solution is a websocket server that would push to all its connected clients a set of personalized or contextual, everytime a new event of interest occurs during a live streaming. Please refer to the blog at https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events/ for more conceptual details and relevance of this websocket server.
 
-<<<<<<<<<< TALK ABOUT THE ROLE & POLICY REQUIRED TO RUN A CF SCRIPT>>>>>>>>>>>>>>>>>
+Note: AWS IAM roles, policies and permissions are required to manage any AWS resource, such as their read, write, delete, update, etc. An AWS user to would need a set of basic permissions on Amazon CloudFormation to be able to describe and create CloudFormation stacks within an AWS account. Please refer to [this documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-iam-template.html) on how to assign the right set of permissions to an AWS user to be able to execute this solution. In theory, there are two ways to create resources here. First, the user (principal) who is executing the script has sufficient permission to create resources such Amazon EC2, Lambda, etc. However, AWS is designed on the basis of least privilege principal. Unless otherwise required, the user should have permission to manage CloudFormation, and CloudFormation should use service roles to create and manage the AWS resources. Please refer to [this documentation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-iam-servicerole.html) for additional details.
 
 The websocket server setup is a single-step process achieved by running this Amazon CloudFormation(CF) script at https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/realtime_personalization_backend_deploy.yaml. You may refer to this link to get familiarized with Amazon CloudFormation and how a CloudFormation template can be run from the AWS console, cli or SDK. 
 
@@ -289,5 +289,5 @@ See [CONTRIBUTING](CONTRIBUTING.md#security-issue-notifications) for more inform
 
 ## License
 
-This library is licensed under the MIT-0 License. See the LICENSE file.
+This library is licensed under the MIT-0 License. See the [LICENSE](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/LICENSE) file.
 
