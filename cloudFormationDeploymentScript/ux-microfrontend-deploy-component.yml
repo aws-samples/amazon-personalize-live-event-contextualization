@@ -173,7 +173,7 @@ Resources:
   EC2Instance1:
     Type: AWS::EC2::Instance
     Properties:
-      ImageId: ami-017c001a88dd93847 
+      ImageId: ami-03cb1380eec7cc118 
       InstanceType: m5.4xlarge
       SecurityGroupIds:
         - !Ref EC2SecurityGroup
@@ -189,10 +189,14 @@ Resources:
           curl -sL https://rpm.nodesource.com/setup_14.x | sudo -E bash -
           yum install -y nodejs
           yum install -y git
+          sudo ec2-user
+          cd $HOME
           # code download
-          git clone https://${GithubOAuthToken}@github.com/${GithubUserName}/${GithubRepo}.git
+          #
+          # git clone https://${GithubOAuthToken}@github.com/${GithubUserName}/${GithubRepo}.git
+          git clone https://github.com/aws-samples/amazon-personalize-live-event-contextualization
           # application code download for bet mf (port 3001)
-          cd rt-personalization-be-server/react-ux/bet
+          cd amazon-personalize-live-event-contextualization/react-ux/bet
           npm install
           npm install file-loader --save-dev
           npm start &
