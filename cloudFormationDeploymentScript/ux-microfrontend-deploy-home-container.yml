@@ -190,8 +190,10 @@ Resources:
           yum install -y nodejs
           yum install -y git
           # application code download for home container app (port 3000)
-          git clone https://${GithubOAuthToken}@github.com/${GithubUserName}/${GithubRepo}.git
-          cd rt-personalization-be-server/react-ux/home
+          # git clone https://${GithubOAuthToken}@github.com/${GithubUserName}/${GithubRepo}.git
+          git clone https://github.com/aws-samples/amazon-personalize-live-event-contextualization
+          cd amazon-personalize-live-event-contextualization/react-ux/home
+          # cd rt-personalization-be-server/react-ux/home
           npm install
           npm install file-loader --save-dev
           npm start &
@@ -271,3 +273,8 @@ Resources:
       - !Ref PublicSubnet2
       SecurityGroups:
         - !GetAtt ELBSecurityGroup.GroupId
+
+Outputs:
+  frontendALBUrl:
+    Description: The URL of the ALB Home
+    Value: !GetAtt ApplicationLoadBalancerHomeApp.DNSName
