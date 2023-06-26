@@ -2,17 +2,17 @@
 
 **Introduction:**
 
-This is a sample code base to illustrate the concept of personalization and contextualization for real-time streaming events, as  outlined in the blog https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events/ . 
+This is a sample code base to illustrate the concept of personalization and contextualization for real-time streaming events, as  outlined in the [blog]([url](https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events/)) . 
 
 The section below provides step-by-step instructions to setup a demo site using React based micro-frontends, websockets and Amazon Personalize.
 
 **STEP # 1: SETUP AMAZON PERSONALIZE**
 
-This is the first prerequisite for this solution. An custom user-personalization style campaign needs to be set up on Amazon Personalize. Please refer to this link for choosing a custom user-personalization recipe https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html. This link explains how to setup a custom user-personalization recipe on Amazon Personalize.
+This is the first prerequisite for this solution. An custom user-personalization style campaign needs to be set up on Amazon Personalize. Please refer to this [link](https://docs.aws.amazon.com/personalize/latest/dg/native-recipe-new-item-USER_PERSONALIZATION.html) for choosing a custom user-personalization recipe. This link explains how to setup a custom user-personalization recipe on Amazon Personalize.
 
-In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following link to understand how custom data sets and schemas work for Amazon Personalize. https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set. 
+In order to setup the this custom user-personalization solution, the training data needs to be created. You can review the following [link](https://docs.aws.amazon.com/personalize/latest/dg/custom-datasets-and-schemas.html) to understand how custom data sets and schemas work for Amazon Personalize. As indicated on the previous document link, there are three dataset types namely interactions, users and items. The JSON structure below illustrates the scheme definition for each such data set. 
 
-As outlined in the  blog https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events, attached below are sample datasets to understand the dataset and their associated context better. For example, "items" over here refer to the micro-frontend components of the consumer application that is meant to deliver a personalized experience (refer to the blog).
+As outlined in the [blog](https://aws.amazon.com/blogs/media/part-3-contextualized-viewer-engagement-and-monetization-for-live-ott-events), attached below are sample datasets to understand the dataset and their associated context better. For example, "items" over here refer to the micro-frontend components of the consumer application that is meant to deliver a personalized experience (refer to the blog).
 
 ***User Interaction Schema*** :
 
