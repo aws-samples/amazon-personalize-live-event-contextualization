@@ -229,7 +229,7 @@ At this stage, it should be possible to test the basic setup of the websocket se
 
 **STEP # 7 : DEPLOY REACT MICRO-FRONTEND COMPONENTS**
 
-Three sample micro-frontend applications are made available to enable end-to-end testing. These micro-frontend applications are demo / skeletal version for a betting module, player profile module, and a video player module. This section explains how these micro-frontend components can be deployed. All these applications are build using ReactJS and hosted on EC2 servers running on different ports. There is one single application load balancer (ALB) provisioned to reach out to these three micro-frontend applications. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-component.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. 
+Three sample micro-frontend applications are made available to enable end-to-end testing. These micro-frontend applications are demo / skeletal version for a betting module, player profile module, and a video player module. This section explains how these micro-frontend components can be deployed. All these applications are build using ReactJS and hosted on EC2 servers running on different ports. There is one single application load balancer (ALB) provisioned to reach out to these three micro-frontend applications. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-component.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. IMPORTANT NOTE: This cloudformation script has a hardcoded AMI-ID specific to the BOM region. It may be noted that EC2 AMIs are specific to a region, and needs to be swapped out with a suitable AMI ID if you are running the cloudformation script from a different region. Specifically, change the "ImageId" attribute in the cloudformation script.
 
 Once the CloudFormation execution is completed successfully it should create an application load balancer (ALB). Please refer to this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) to familiarize yourself on ALB is required. If the CloudFormation script was run from the AWS console, you can navigate to CloudFormation > Stacks > (Selcted Stack). Click on the "Outputs" tab of the selected stack and look for the Application Load Balancer (ALB) that was created as a part of execution. Please note that CloudFormation stacks are region specific and you stick to the same region. Alternatively, you can extract the ALB output using [AWS CLI commands](https://aws.amazon.com/cli/).
 
@@ -250,7 +250,7 @@ Please visit each of the URLs to see a static application comes up for each of m
 	
 A ReactJS based container application is provided as a part of this solution. This application intercepts messages from the websocket server that was setup in the previous steps of this exercise. Based on the contextual recommendations received from the websocket server, this application dynamically invokes different micro-frontends to  provide the right experience to the user at the right point in time. The application therefore needs to be configured such that it is aware of the websocket server endpoint and also the three micro-frontends that are running in a different application context.
 
-This container application is build using ReactJS and hosted on EC2 server running on port 3000. There is one  application load balancer (ALB) provisioned to reach out to this container application. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-home-container.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. 
+This container application is build using ReactJS and hosted on EC2 server running on port 3000. There is one  application load balancer (ALB) provisioned to reach out to this container application. The micro-frontends is to be deployed using the following [CloudFormation script](https://github.com/aws-samples/amazon-personalize-live-event-contextualization/blob/main/cloudFormationDeploymentScript/ux-microfrontend-deploy-home-container.yml). Run this CloudFormation script from the console or AWS CLI, as done in the previous steps. IMPORTANT NOTE: This cloudformation script has a hardcoded AMI-ID specific to the BOM region. It may be noted that EC2 AMIs are specific to a region, and needs to be swapped out with a suitable AMI ID if you are running the cloudformation script from a different region. Specifically, change the "ImageId" attribute in the cloudformation script.
 
 Once the CloudFormation execution is completed successfully it should create an application load balancer (ALB). Please refer to this [link](https://docs.aws.amazon.com/elasticloadbalancing/latest/application/introduction.html) to familiarize yourself on ALB is required. If the CloudFormation script was run from the AWS console, you can navigate to CloudFormation > Stacks > (Selcted Stack). Click on the "Outputs" tab of the selected stack and look for the Application Load Balancer (ALB) that was created as a part of execution. Please note that CloudFormation stacks are region specific and you stick to the same region. Alternatively, you can extract the ALB output using [AWS CLI commands](https://aws.amazon.com/cli/).
 
@@ -259,16 +259,15 @@ Once the ALB is located within the CloudFormation outputs, note down its URL (A 
 In the "Outputs" section of the CloudFormation stack, also note down the DNS of the EC2 instance that was created. This is the EC2 instance that is hosting the React container application. It is required to login to this EC2 instance and update a few configurations as detailed through the pointers below
 
 1. Refer to this [link](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/AccessingInstances.html) to learn the different ways to connect to an EC2 instance.
-2. Ensure that you are in the home directory of "ec2-user"
-3. Change directory to "rt-personalization-be-server/react-ux/home"
-4. In this directory, open the file "webpack.config.js"
-5. Look for the key "plugins -> remotes"
-6. For each of the remote component entries update with the application loadbalancer DNS for micro-frontends (Refer STEP # 7)
-7. Save and close the file.
-8. Change directory to "src" and open the "App.js" file. 
-9. Update the entry to "websocket_server_url", based on the websocket endpoint obtained in STEP # 2
-10. Save and close the file.
-11. You can now logout of the EC2 console
+2. Change directory to "/rt-personalization-be-server/react-ux/home"
+3. In this directory, open the file "webpack.config.js"
+4. Look for the key "plugins -> remotes"
+5. For each of the remote component entries update with the application loadbalancer DNS for micro-frontends (Refer STEP # 7)
+6. Save and close the file.
+7. Change directory to "src" and open the "App.js" file. 
+8. Update the entry to "websocket_server_url", based on the websocket endpoint obtained in STEP # 2
+9. Save and close the file.
+10. You can now logout of the EC2 console
 
 NOTE: If you are not comfortable logging in to the EC2 console, you can download (pull) the application code into your local system. Update the configuration changes (as outlined in the section above), and copy over the changed files to the EC2 console that is hosting the container application. Moreover, in production setups, this configuration change should be handled automatically through parameter stores such as Amazon SSM, consul, or a parameter entry in Amazon DynamoDB. The ReactJS application code should be modified to pick up these parameters from the selected paramter store.
 
@@ -292,6 +291,12 @@ Answer: This application would work on any environment, but we strongly encourag
 
 Question: Can I contribute to this project?
 Answer: Yes. You can always contribute your changes through a pull request.
+
+Question: The cloudformation script uses "m5.4xlarge" scripts. Do we really need this big size instances for this POC?
+Answer: The demo version of the application deploys three react applications (the micro frontends). This is memory intensive in general and hence a memory optimized large instance is chosen. Please feel free to optimize based on your usage, or even explore options of serverless by hosting the site to through Amazon S3. Here is an [example](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html) for the same.
+
+Question: What will be the cost of running this POC?
+Answer: It is advisable to get a quote based on the exact resources that you choose to deploy by using the AWS pricing calculator. The link to the pricing calculator is here[](https://calculator.aws/#/)
 
 Question: I have never worked on Personalize before. How can I create a basic campaign to complete this exercise?
 Answer: You can familiarize yourself on Amazon Personalize through by reading through [here](https://docs.aws.amazon.com/personalize/latest/dg/getting-started.html). This [git repo](https://github.com/aws-samples/amazon-personalize-samples) has a variety of code samples to get started with.
