@@ -13,9 +13,6 @@ Parameters:
   GithubOAuthToken:
     Type: String
     Default: NA
-  EC2DefaultRole:
-    Type: String
-    Default: NA
 
 Resources:
   VPC:
@@ -159,6 +156,20 @@ Resources:
     Properties:
       SubnetId: !Ref PrivateSubnet
       RouteTableId: !Ref PrivateRouteTable
+  
+  # ec2 default iam role for ssm
+  Ec2DefaultSsmIamRole:
+    Type: AWS::IAM::Role
+    Properties: 
+      AssumeRolePolicyDocument: 
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: [ec2.amazonaws.com]
+            Action: ['sts:AssumeRole']
+      Path: /
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM
 
   # ec2 instance profile
   ReactComponentInstanceProfile:
@@ -167,7 +178,7 @@ Resources:
       InstanceProfileName: react-comp-instance-profile
       Path: /
       Roles: 
-       - !Ref EC2DefaultRole
+       - !Ref Ec2DefaultSsmIamRole
 
   #EC2 Instance to host the react app
   EC2Instance1:
