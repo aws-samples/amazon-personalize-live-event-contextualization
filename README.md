@@ -271,11 +271,11 @@ In the "Outputs" section of the CloudFormation stack, also note down the DNS of 
 
 NOTE: If you are not comfortable logging in to the EC2 console, you can download (pull) the application code into your local system. Update the configuration changes (as outlined in the section above), and copy over the changed files to the EC2 console that is hosting the container application. Moreover, in production setups, this configuration change should be handled automatically through parameter stores such as Amazon SSM, consul, or a parameter entry in Amazon DynamoDB. The ReactJS application code should be modified to pick up these parameters from the selected paramter store.
 
-After the above steps are successfully completed, open your favorite browser to hit the URL for the application load balancer created for this container application on port number 3000. The URL structure will look as "http://application-load-balancer-for-container-react-app:3000". You should be able to see the application loaded, and the widgets changing dynamically based on the inputs received from the websocket server. Moreover, you can open the browser console log to see if the application connected gracefully to the websocket servers, and contextual recommendation messages are received periodically.
+After the above steps are successfully completed, open your favorite browser to hit the URL for the application load balancer created for this container application on port number 3000. The URL structure will look as "http://application-load-balancer-for-container-react-app:3000". This is the same ALB URL that was obtained on the CloudFormation output. You should be able to see the application loaded, and the widgets changing dynamically based on the inputs received from the websocket server. Moreover, you can open the browser console log to see if the application connected gracefully to the websocket servers, and contextual recommendation messages are received periodically.
 
 
 
-** Frequently Asked Questions **
+** FREQUENTLY ASKED QUESTIONS (FAQ) **
 
 Question: Why I am not able to create the CloudFormation stack?
 Answer: Ensure the IAM user through which you are logged in to the AWS console (or CLI) has sufficient permission to list or create stacks. This is explained in the earlier sections.
