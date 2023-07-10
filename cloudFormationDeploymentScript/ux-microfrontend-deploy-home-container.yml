@@ -223,6 +223,11 @@ Resources:
         FromPort: 3000
         ToPort: 3000
         CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
   
   # EC2 Security Group
   EC2SecurityGroup:
@@ -238,6 +243,11 @@ Resources:
           Fn::GetAtt:
           - ELBSecurityGroup
           - GroupId
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: 3000
+          ToPort: 3000
+          CidrIp: 0.0.0.0/0
       
   # Target Group for ALB
   EC2TargetGroupHomeApp:
