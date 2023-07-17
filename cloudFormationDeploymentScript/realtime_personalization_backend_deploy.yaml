@@ -149,7 +149,11 @@ Resources:
               - 'personalize:DescribeCampaign'
               - 'personalize:GetRecommendations'
             Effect: Allow
-            Resource: '*'
+            Resource:
+              - !GetAtt RTPersonalizeEventManager.Arn
+              - !GetAtt RTPersonalizeEventManager.StreamArn
+              - !GetAtt RTPersonalizeUserSessionStore.Arn
+              - !GetAtt RTPersonalizeSoccerPersonalizeItem.Arn
         Version: 2012-10-17
       PolicyName: rtPersonalizeEventManagerServiceHandlerRoleDefaultPolicy
       Roles:
