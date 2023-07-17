@@ -139,7 +139,7 @@ Once the campaign is setup successful, please note the ARN value. This value wil
 
     'arn:aws:personalize:<aws-region>:<aws-account>:campaign/soccer-ux' 
     
-**IMPORTANT NOTE** : The subsequent steps do execute a set of cloudformation scripts. It is advisable to validate the cloudformation scripts using the [CFN_NAG]([url](https://github.com/stelligent/cfn_nag)) utility, to carefully review the warnings and assess if they are relevant for your environment. Please feel free to fine-tune the scripts as required for your environment, or as prescribed by your corporate security. 
+_IMPORTANT NOTE : The subsequent steps do execute a set of cloudformation scripts. It is advisable to validate the cloudformation scripts using the [CFN_NAG]([url](https://github.com/stelligent/cfn_nag)) utility, to carefully review the warnings and assess if they are relevant for your environment. Please feel free to fine-tune the scripts as required for your environment, or as prescribed by your corporate security._ 
 
 **STEP # 2 : SETUP BACKEND WEBSOCKET SERVER**
 
