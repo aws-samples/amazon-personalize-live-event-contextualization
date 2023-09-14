@@ -49,6 +49,7 @@ Resources:
       Type: String
       Value: !Ref AWSPersonalizeCampaignAWSRegion
 
+
   # table for live event manager, this table has ddb streams enabled driving lambda
   RTPersonalizeEventManager:
     Type: 'AWS::DynamoDB::Table'
@@ -154,10 +155,17 @@ Resources:
               - !GetAtt RTPersonalizeEventManager.StreamArn
               - !GetAtt RTPersonalizeUserSessionStore.Arn
               - !GetAtt RTPersonalizeSoccerPersonalizeItem.Arn
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/rt_personalize/aws_personalize/campaign_arn"
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/rt_personalize/aws_personalize/num_results"
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/rt_personalize/aws_personalize/region"
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/rt_personalize/api/api_gateway/domain"
+              - !Sub "arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/rt_personalize/api/api_gateway/stage"
+              - !Ref AWSPersonalizeCampaignARN
         Version: 2012-10-17
       PolicyName: rtPersonalizeEventManagerServiceHandlerRoleDefaultPolicy
       Roles:
         - !Ref rtPersonalizeEventManagerServiceHandlerRole
+     
   
   # lambda function to handle ddb streams
   rtPersonalizeDdbEventStreamHandler:
@@ -852,4 +860,3 @@ Resources:
 Outputs:
   apiGatewayInvokeURL:
     Value: !Sub wss://${rtPersonalizationWebSocketApiGateway}.execute-api.${AWS::Region}.amazonaws.com/${rtPersonalizeApiGatewayStage}
-
