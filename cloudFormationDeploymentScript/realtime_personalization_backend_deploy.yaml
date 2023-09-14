@@ -1,6 +1,5 @@
 AWSTemplateFormatVersion: 2010-09-09
 
-
 Description: Creates the websocket api for real time personalization of live events
 
 # Parameters to be used through out the template
